@@ -49,6 +49,7 @@ jobs:
         key: ${{ secrets.KEY }} #EC2 인스턴스 생성 시 생성한 키 페어 .pem 파일 복붙 (begin 부터 end 까지 전체 복붙)
         script: |
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_DOMAIN }}
+          docker info
           sudo docker rm -f rtf-container
           sudo docker pull ${{ secrets.ECR_RTF_REPO }}:latest
           sudo docker run -d --name rtf-container -p 80:80 ${{ secrets.ECR_RTF_REPO }}:latest
