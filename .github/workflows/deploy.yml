@@ -23,9 +23,6 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
-      with:
-        region: ${{ secrets.REGION }}
-        registry: ${{ secrets.ECR_DOMAIN }}
 
     - name: Docker build and ECR push
       id: build-push
