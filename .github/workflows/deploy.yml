@@ -31,11 +31,14 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
-    - name: Docker build and ECR push
-      id: build-push
+    - name: Build Docker image
       run: |
-        sudo docker build -t ${{ secrets.ECR_RTF_REPO }}:latest
-        sudo docker push ${{ secrets.ECR_RTF_REPO }}:latest
+        docker build -t rtf-app:latest .
+        docker tag rtf-app:latest ${{ secrets.ECR_RTF_REPO }}:latest
+
+    - name: Push Docker image to ECR
+      run: |
+        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_REPOSITORY }}:latest
 
     - name: Deploy to server
       uses: appleboy/ssh-action@master
