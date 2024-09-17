@@ -25,7 +25,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
       with:
         region: ${{ secrets.REGION }}
-        registry: ${{ secrets.ECR_RTF_REPO }}
+        registry: ${{ secrets.ECR_DOMAIN }}
 
     - name: Docker build and ECR push
       id: build-push
@@ -41,7 +41,6 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.KEY }} #EC2 인스턴스 생성 시 생성한 키 페어 .pem 파일 복붙 (begin 부터 end 까지 전체 복붙)
         script: |
-          echo "${{ secrets.DOCKER_PWD }}" | sudo docker login -u "${{ secrets.DOCKER_NAME }}" --password-stdin
           sudo docker rm -f rtf-container
           sudo docker pull ${{ secrets.ECR_RTF_REPO }}:latest
           sudo docker run -d --name rtf-container -p 80:80 ${{ secrets.ECR_RTF_REPO }}:latest
