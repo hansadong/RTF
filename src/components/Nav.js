@@ -1,6 +1,4 @@
 import React from 'react';
-import App from "../App";
-import LoginView from "./Login/LoginView";
 
 function Nav() {
     return (
@@ -15,10 +13,10 @@ function Nav() {
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li className="nav-item"><a className="nav-link active" aria-current="page" href="#!">Home</a>
                         </li>
-                        <li className="nav-item"><a className="nav-link" href="#!">Login</a></li>
+                        <li className="nav-item"><a className="nav-link" href="#!">메뉴</a></li>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                               data-bs-toggle="dropdown" aria-expanded="false">레시피 목록</a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a className="dropdown-item" href="#!">All Products</a></li>
                                 <li>
@@ -30,10 +28,13 @@ function Nav() {
                         </li>
                     </ul>
                     <form className="d-flex">
+                        <button className="btn btn-outline-dark" type="submit" style={{marginRight: "10px"}}>
+                            <i className="bi-cart-fill me-1"></i>
+                            Sign Up
+                        </button>
                         <button className="btn btn-outline-dark" type="submit">
                             <i className="bi-cart-fill me-1"></i>
-                            Cart
-                            <span className="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            Login
                         </button>
                     </form>
                 </div>
