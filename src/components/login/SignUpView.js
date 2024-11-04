@@ -81,16 +81,6 @@ function SignUpFormSubmitComponent() {
                                     required.
                                 </div>
                             </div>
-                            <div className="form-floating mb-3">
-                                <input className="form-control" id="memberEmail" type="email" placeholder="name@example.com"
-                                       data-sb-validations="required,email" onChange={handleInputChange} name="memberEmail" value={formData.memberEmail}/>
-                                <label htmlFor="email">이메일</label>
-                                <div className="invalid-feedback" data-sb-feedback="email:required">An email is
-                                    required.
-                                </div>
-                                <div className="invalid-feedback" data-sb-feedback="email:email">Email is not valid.
-                                </div>
-                            </div>
                             <div className="d-none" id="submitSuccessMessage">
                                 <div className="text-center mb-3">
                                     <div className="fw-bolder">Form submission successful!</div>
