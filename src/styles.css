@@ -3115,6 +3115,10 @@ textarea.form-control-lg {
   --bs-gradient: none;
 }
 
+.btn-right {
+  margin-right: 10px;
+}
+
 .btn-link {
   --bs-btn-font-weight: 400;
   --bs-btn-color: var(--bs-link-color);

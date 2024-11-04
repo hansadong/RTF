@@ -1,6 +1,26 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 function Nav() {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        const token = Cookies.get('token');
+        if (token) {
+            setIsAuthenticated(true);
+        }
+    }, []);
+
+    const logout = () => {
+        const logoutConfirm = window.confirm('로그아웃 하시겠습니까?');
+        if (logoutConfirm) {
+            Cookies.remove('token'); // 쿠키에서 토큰 제거
+            setIsAuthenticated(false);
+        }
+    };
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container px-4 px-lg-5">
@@ -28,14 +48,38 @@ function Nav() {
                         </li>
                     </ul>
                     <form className="d-flex">
-                        <button className="btn btn-outline-dark" type="submit" style={{marginRight: "10px"}}>
-                            <i className="bi-cart-fill me-1"></i>
-                            Sign Up
-                        </button>
-                        <button className="btn btn-outline-dark" type="submit">
-                            <i className="bi-cart-fill me-1"></i>
-                            Login
-                        </button>
+                        {isAuthenticated ? (
+                            <CSSTransition
+                                in={isAuthenticated}
+                                timeout={300}
+                                classNames="fade"
+                                unmountOnExit
+                            >
+                                <React.Fragment>
+                                <Link to="/mypage">
+                                    <button className="btn btn-warning btn-right" type="button">
+                                        MyPage
+                                    </button>
+                                </Link>
+                                <button className="btn btn-dark" type="button" onClick={logout}>
+                                    Logout
+                                </button>
+                                </React.Fragment>
+                            </CSSTransition>
+                        ) : (
+                            <React.Fragment>
+                            <Link to="/signup">
+                                <button className="btn btn-primary btn-right" type="submit">
+                                    Sign Up
+                                </button>
+                            </Link>
+                            <Link to="/login">
+                                <button className="btn btn-dark" type="submit">
+                                    Login
+                                </button>
+                            </Link>
+                            </React.Fragment>
+                        )}
                     </form>
                 </div>
             </div>

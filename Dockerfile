@@ -1,5 +1,5 @@
 # 1. 빌드 환경 설정
-FROM node:16-alpine as build
+FROM node:20-alpine as build
 
 WORKDIR /app
 COPY package.json .
