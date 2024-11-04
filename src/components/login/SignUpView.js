@@ -61,7 +61,7 @@ function SignUpFormSubmitComponent() {
                     <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i
                         className="bi bi-envelope"></i></div>
                     <h2 className="fw-bolder">레시피탭</h2>
-                    <p className="lead mb-0">회원가입 후 레서피탭을 이용해 보세요!</p>
+                    <p className="lead mb-0">회원가입 후 레시피탭을 이용해 보세요!</p>
                 </div>
                 <div className="row gx-5 justify-content-center">
                     <div className="col-lg-6">
