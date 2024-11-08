@@ -7,12 +7,6 @@ function SignUpFormSubmitComponent() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [formData, setFormData] = useState({
-        memberId: '',
-        memberPwd: '',
-        memberEmail: '',
-        nickName: ''
-    });
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
 

@@ -20,12 +20,12 @@ const getCookie = (name) => {
 };
 
 function LoginFormSubmitComponent() {
-    const [memberId, setMemberId] = useState('');
-    const [memberPwd, setMemberPwd] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleLoginClick = async (formData) => {
+        setLoading(true);
         try {
             const response = await
                 axios.post(
@@ -49,7 +49,7 @@ function LoginFormSubmitComponent() {
                 alert('아이디와 비밀번호를 다시 한번 확인해 주세요!');
             }
         } finally {
-
+            setLoading(false);
         }
     };
     return (
@@ -75,7 +75,6 @@ function LoginFormSubmitComponent() {
                             </div>
                             <div className="form-floating mb-3">
                                 <input className="form-control" id="memberPwd" name="memberPwd" type="password"
-                                       onChange={(e) => setMemberPwd(e.target.value)}
                                        placeholder="비밀번호"
                                        {...register('memberPwd', {
                                            required: '비밀번호를 입력해 주세요.'
@@ -87,6 +86,14 @@ function LoginFormSubmitComponent() {
                                 <button className="btn btn-primary btn-lg" id="loginButton" type="submit">로그인
                                 </button>
                             </div>
+                            <div style={styles.container}>
+                                {loading && (
+                                    <div style={styles.overlay}>
+                                        <img src={`${process.env.PUBLIC_URL}/loading.gif`} alt="Loading..."
+                                             style={styles.loadingImage}/>
+                                    </div>
+                                )}
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -94,5 +101,27 @@ function LoginFormSubmitComponent() {
         </section>
     );
 }
+
+const styles = {
+    container: {
+        position: 'relative',
+    },
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        zIndex: 1000,
+    },
+    loadingImage: {
+        width: '50px',
+        height: '50px',
+    },
+};
 
 export default LoginFormSubmitComponent;
