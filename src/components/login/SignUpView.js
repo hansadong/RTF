@@ -50,22 +50,6 @@ function SignUpFormSubmitComponent() {
         }
     };
 
-    // if (loading) {
-    //     console.log("로딩중");
-    //     return (
-    //         <div style={styles.container}>
-    //             <div style={styles.overlay}>
-    //                 <img src={`${process.env.PUBLIC_URL}/loading.gif`} alt="Loading..." style={styles.loadingImage} />
-    //             </div>
-    //         </div>
-    //     );
-    // }
-
-    if (error) {
-        console.log("에러발생");
-        setError(error.message + " ERROR TEST");
-    }
-
     return (
         <section className="bg-light py-5">
             <div className="container px-5 my-5 px-5">
