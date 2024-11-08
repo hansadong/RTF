@@ -53,8 +53,10 @@ function SignUpFormSubmitComponent() {
     if (loading) {
         console.log("로딩중");
         return (
-            <div style={styles.overlay}>
-                <img src={`${process.env.PUBLIC_URL}/loading.gif`} alt="Loading..." style={styles.loadingImage} />
+            <div style={styles.container}>
+                <div style={styles.overlay}>
+                    <img src={`${process.env.PUBLIC_URL}/loading.gif`} alt="Loading..." style={styles.loadingImage} />
+                </div>
             </div>
         );
     }
@@ -156,6 +158,9 @@ function SignUpFormSubmitComponent() {
 }
 
 const styles = {
+    container: {
+        position: 'relative',
+    },
     overlay: {
         position: 'fixed',
         top: 0,
@@ -167,15 +172,11 @@ const styles = {
         alignItems: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         zIndex: 1000,
-        pointerEvents: 'none'  // 사용자 상호작용 비활성화
     },
     loadingImage: {
         width: '50px',
         height: '50px',
     },
-    content: {
-        pointerEvents: 'auto',  // 사용자 상호작용 활성화
-    }
 };
 
 export default SignUpFormSubmitComponent;
