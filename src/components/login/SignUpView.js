@@ -34,17 +34,15 @@ function SignUpFormSubmitComponent() {
                 }
             );
             if (response.status === 200) {
-                alert('회원가입이 완료되었습니다!');
+                alert(response.data);
                 navigate(-1);
             }
             setData(response.data);
         } catch (error) {
             if (error.response.status === 400) {
-                alert('이미 등록된 아이디입니다!');
+                alert(error.response.data);
             }
-            console.log(error.response.data);
-            console.log(error.message);
-            setError(error.message);
+            setError(error.response.data + " (" + error.message + ")");
         } finally {
             setLoading(false);
         }
