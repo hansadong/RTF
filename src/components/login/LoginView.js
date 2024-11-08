@@ -25,19 +25,18 @@ function LoginFormSubmitComponent() {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const handleLoginClick = async () => {
+    const handleLoginClick = async (formData) => {
         try {
             const response = await
                 axios.post(
                 'http://api.recipetab.shop/api/auth/login',
-                {memberId, memberPwd},
-                // {withCredentials: true},
-                {
-                    headers: {
-                        'Content-Type':
-                            'multipart/form-data'
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type':
+                                'multipart/form-data'
+                        }
                     }
-                }
             );
 
             // 로그인 성공 시
