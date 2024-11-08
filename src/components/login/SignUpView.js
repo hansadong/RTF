@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import {redirect, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {useForm} from "react-hook-form";
 
 function SignUpFormSubmitComponent() {
     const [data, setData] = useState(null);
@@ -9,20 +10,22 @@ function SignUpFormSubmitComponent() {
     const [formData, setFormData] = useState({
         memberId: '',
         memberPwd: '',
-        memberEmail: ''
+        memberEmail: '',
+        nickName: ''
     });
     const navigate = useNavigate();
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const handleSignUpSubmit = async (event) => {
-        event.preventDefault(); // 폼 제출의 기본 동작을 막습니다.
+    // const handleInputChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setFormData({
+    //         ...formData,
+    //         [name]: value
+    //     });
+    // };
+
+    const handleSignUpSubmit = async (formData) => {
         console.log(formData);
         console.log('폼이 제출되었습니다!');
 
@@ -39,11 +42,11 @@ function SignUpFormSubmitComponent() {
                     }
                 }
             );
-            setData(response.data);
             if (response.status === 200) {
                 alert('회원가입이 완료되었습니다!');
                 navigate(-1);
             }
+            setData(response.data);
         } catch (error) {
             if (error.response.status === 400) {
                 alert('이미 등록된 아이디입니다!');
@@ -53,6 +56,20 @@ function SignUpFormSubmitComponent() {
             setLoading(false);
         }
     };
+
+    if (loading) {
+        console.log("로딩중");
+        return (
+            <div style={styles.overlay}>
+                <img src={`${process.env.PUBLIC_URL}/loading.gif`} alt="Loading..." style={styles.loadingImage} />
+            </div>
+        );
+    }
+
+    if (error) {
+        console.log("에러발생");
+        return <div>에러가 발생했습니다: {error.message}</div>;
+    }
 
     return (
         <section className="bg-light py-5">
@@ -65,32 +82,69 @@ function SignUpFormSubmitComponent() {
                 </div>
                 <div className="row gx-5 justify-content-center">
                     <div className="col-lg-6">
-                        <form id="contactForm" data-sb-form-api-token="API_TOKEN" onSubmit={handleSignUpSubmit}>
+                        <form id="contactForm" onSubmit={handleSubmit(handleSignUpSubmit)}>
                             <div className="form-floating mb-3">
-                                <input className="form-control" id="memberId" type="text" placeholder="사용할 아이디를 입력해 주세요."
-                                       data-sb-validations="required" onChange={handleInputChange} name="memberId" value={formData.memberId}/>
-                                <label htmlFor="name">아이디</label>
-                                <div className="invalid-feedback" data-sb-feedback="name:required">A name is required.
-                                </div>
+                                <input className="form-control" id="memberId" name="memberId" type="text"
+                                       placeholder="아이디"
+                                       {...register('memberId', {
+                                           required: '아이디는 필수 입력입니다.',
+                                           minLength: {
+                                               value: 8,
+                                               message: '최소 8자리 이상 입력해 주세요.'
+                                           },
+                                           maxLength: {
+                                               value: 16,
+                                               message: '최대 16자리까지 입력 가능합니다.'
+                                           },
+                                           pattern: {
+                                               value: /^(?=.*[a-z])[a-z0-9]+$/,
+                                               message: '아이디는 영소문자와 숫자만 사용해 주세요.'
+                                           }
+                                       })}/>
+                                {errors.memberId && <p style={{color: 'red'}}>{errors.memberId.message}</p>}
+                                <label htmlFor="memberId">* 아이디</label>
                             </div>
                             <div className="form-floating mb-3">
-                                <input className="form-control" id="memberPwd" type="password" placeholder="숫자,영대소문자,특수문자 사용 10~14자리"
-                                       data-sb-validations="required" onChange={handleInputChange} name="memberPwd" value={formData.memberPwd}/>
-                                <label htmlFor="phone">비밀번호</label>
-                                <div className="invalid-feedback" data-sb-feedback="phone:required">A phone number is
-                                    required.
-                                </div>
+                                <input className="form-control" id="memberPwd" type="password"
+                                       placeholder="숫자,영대소문자,특수문자 사용 10~14자리"
+                                       data-sb-validations="required" name="memberPwd"
+                                       {...register('memberPwd', {
+                                           required: '비밀번호는 필수 입력입니다.',
+                                           pattern: {
+                                               value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                               message: '비밀번호는 최소 8자리 이상, 영대문자/영소문자 1개 이상, 숫자 1개 이상, 특수문자(@$!%*?&) 1개 이상 사용해 주세요.'
+                                           }
+                                       })}/>
+                                {errors.memberPwd && <div style={{color: 'red'}}>{errors.memberPwd.message}</div>}
+                                <label htmlFor="memberPwd">* 비밀번호</label>
                             </div>
-                            <div className="d-none" id="submitSuccessMessage">
-                                <div className="text-center mb-3">
-                                    <div className="fw-bolder">Form submission successful!</div>
-                                    To activate this form, sign up at
-                                    <br/>
-                                    <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                                </div>
+                            <div className="form-floating mb-3">
+                                <input className="form-control" id="memberEmail" type="text"
+                                       placeholder="이메일"
+                                       data-sb-validations="required" name="memberEmail"
+                                       {...register('memberEmail', {
+                                           required: '이메일은 필수 입력입니다.',
+                                           pattern: {
+                                               value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                               message: '이메일 형식에 맞게 입력해 주세요. (ex: Example@example.com)'
+                                           }
+                                       })}/>
+                                {errors.memberEmail && <div style={{color: 'red'}}>{errors.memberEmail.message}</div>}
+                                <label htmlFor="memberEmail">* 이메일</label>
                             </div>
-                            <div className="d-none" id="submitErrorMessage">
-                                <div className="text-center text-danger mb-3">Error sending message!</div>
+                            <div className="form-floating mb-3">
+                                <input className="form-control" id="nickName" type="text"
+                                       placeholder="닉네임"
+                                       data-sb-validations="required" name="nickName"
+                                       {...register('nickName', {
+                                           required: '닉네임은 필수 입력입니다.',
+                                           pattern: {
+                                               value: /^[가-힣]{2,10}$/,
+                                               message: '닉네임은 2~10자로 한글로만 입력해 주세요.'
+                                           }
+                                       })}/>
+                                {errors.nickName && <div style={{color: 'red'}}>{errors.nickName.message}</div>}
+                                <label htmlFor="nickName">* 닉네임</label>
                             </div>
                             <div className="d-grid">
                                 <button className="btn btn-primary btn-lg" id="submitButton"
@@ -104,5 +158,28 @@ function SignUpFormSubmitComponent() {
         </section>
     );
 }
+
+const styles = {
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        zIndex: 1000,
+        pointerEvents: 'none'  // 사용자 상호작용 비활성화
+    },
+    loadingImage: {
+        width: '50px',
+        height: '50px',
+    },
+    content: {
+        pointerEvents: 'auto',  // 사용자 상호작용 활성화
+    }
+};
 
 export default SignUpFormSubmitComponent;

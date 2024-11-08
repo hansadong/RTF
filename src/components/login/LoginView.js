@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import {useNavigate} from "react-router-dom";
+import {useForm} from "react-hook-form";
 
 const setCookie = (name, value, options = {}) => {
     Cookies.set(name, value, { expires: 1 });
@@ -22,10 +23,12 @@ function LoginFormSubmitComponent() {
     const [memberId, setMemberId] = useState('');
     const [memberPwd, setMemberPwd] = useState('');
     const navigate = useNavigate();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleLoginClick = async () => {
         try {
-            const response = await axios.post(
+            const response = await
+                axios.post(
                 'http://api.recipetab.shop/api/auth/login',
                 {memberId, memberPwd},
                 // {withCredentials: true},
@@ -61,26 +64,28 @@ function LoginFormSubmitComponent() {
                 </div>
                 <div className="row gx-5 justify-content-center">
                     <div className="col-lg-6">
-                        <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                        <form id="contactForm" onSubmit={handleSubmit(handleLoginClick)}>
                             <div className="form-floating mb-3">
-                                <input className="form-control" id="memberId" type="text" value={memberId}
-                                       onChange={(e) => setMemberId(e.target.value)}
-                                       data-sb-validations="required"/>
-                                <label htmlFor="name">아이디</label>
-                                <div className="invalid-feedback" data-sb-feedback="name:required">Id is required.
-                                </div>
+                                <input className="form-control" id="memberId" name="memberId" type="text"
+                                       placeholder="아이디"
+                                       {...register('memberId', {
+                                           required: '아이디를 입력해 주세요.'
+                                       })}/>
+                                {errors.memberId && <p style={{color: 'red'}}>{errors.memberId.message}</p>}
+                                <label htmlFor="memberId">아이디</label>
                             </div>
                             <div className="form-floating mb-3">
-                                <input className="form-control" id="memberPwd" type="password" value={memberPwd}
+                                <input className="form-control" id="memberPwd" name="memberPwd" type="password"
                                        onChange={(e) => setMemberPwd(e.target.value)}
-                                       data-sb-validations="required,memberpwd"/>
-                                <label htmlFor="email">비밀번호</label>
-                                <div className="invalid-feedback" data-sb-feedback="memberPwd:required">Password is required.
-                                </div>
+                                       placeholder="비밀번호"
+                                       {...register('memberPwd', {
+                                           required: '비밀번호를 입력해 주세요.'
+                                       })}/>
+                                {errors.memberPwd && <p style={{color: 'red'}}>{errors.memberPwd.message}</p>}
+                                <label htmlFor="memberPwd">비밀번호</label>
                             </div>
                             <div className="d-grid">
-                                <button className="btn btn-primary btn-lg" id="loginButton"
-                                        onClick={handleLoginClick} type="button">로그인
+                                <button className="btn btn-primary btn-lg" id="loginButton" type="submit">로그인
                                 </button>
                             </div>
                         </form>
