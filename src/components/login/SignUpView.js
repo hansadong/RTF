@@ -50,16 +50,16 @@ function SignUpFormSubmitComponent() {
         }
     };
 
-    if (loading) {
-        console.log("로딩중");
-        return (
-            <div style={styles.container}>
-                <div style={styles.overlay}>
-                    <img src={`${process.env.PUBLIC_URL}/loading.gif`} alt="Loading..." style={styles.loadingImage} />
-                </div>
-            </div>
-        );
-    }
+    // if (loading) {
+    //     console.log("로딩중");
+    //     return (
+    //         <div style={styles.container}>
+    //             <div style={styles.overlay}>
+    //                 <img src={`${process.env.PUBLIC_URL}/loading.gif`} alt="Loading..." style={styles.loadingImage} />
+    //             </div>
+    //         </div>
+    //     );
+    // }
 
     if (error) {
         console.log("에러발생");
@@ -148,6 +148,13 @@ function SignUpFormSubmitComponent() {
                                 <button className="btn btn-primary btn-lg" id="submitButton"
                                         type="submit">회원가입
                                 </button>
+                            </div>
+                            <div style={styles.container}>
+                                {loading && (
+                                    <div style={styles.overlay}>
+                                        <img src={`${process.env.PUBLIC_URL}/loading.gif`} alt="Loading..." style={styles.loadingImage} />
+                                    </div>
+                                )}
                             </div>
                         </form>
                     </div>
