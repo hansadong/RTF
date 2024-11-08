@@ -110,8 +110,8 @@ function SignUpFormSubmitComponent() {
                                        {...register('nickName', {
                                            required: '닉네임은 필수 입력입니다.',
                                            pattern: {
-                                               value: /^[가-힣]{2,10}$/,
-                                               message: '닉네임은 2~10자로 한글로만 입력해 주세요.'
+                                               value: /^[a-zA-Z0-9가-힣]{2,10}$/,
+                                               message: '닉네임은 2~10자로 한글/영어/숫자만 입력해 주세요.'
                                            }
                                        })}/>
                                 {errors.nickName && <div style={{color: 'red'}}>{errors.nickName.message}</div>}
