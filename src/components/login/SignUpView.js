@@ -88,8 +88,8 @@ function SignUpFormSubmitComponent() {
                                        {...register('memberPwd', {
                                            required: '비밀번호는 필수 입력입니다.',
                                            pattern: {
-                                               value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                                               message: '비밀번호는 최소 8자리 이상, 영대문자/영소문자 1개 이상, 숫자 1개 이상, 특수문자(@$!%*?&) 1개 이상 사용해 주세요.'
+                                               value: /^((?=.*[A-Z])|(?=.*[a-z]))(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                               message: '비밀번호는 최소 8자리 이상, 영대문자or영소문자 1개 이상, 숫자 1개 이상, 특수문자(@$!%*?&) 1개 이상 사용해 주세요.'
                                            }
                                        })}/>
                                 {errors.memberPwd && <div style={{color: 'red'}}>{errors.memberPwd.message}</div>}
