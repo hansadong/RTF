@@ -14,16 +14,7 @@ function SignUpFormSubmitComponent() {
         nickName: ''
     });
     const navigate = useNavigate();
-
     const { register, handleSubmit, formState: { errors } } = useForm();
-
-    // const handleInputChange = (event) => {
-    //     const { name, value } = event.target;
-    //     setFormData({
-    //         ...formData,
-    //         [name]: value
-    //     });
-    // };
 
     const handleSignUpSubmit = async (formData) => {
         console.log(formData);
@@ -51,6 +42,8 @@ function SignUpFormSubmitComponent() {
             if (error.response.status === 400) {
                 alert('이미 등록된 아이디입니다!');
             }
+            console.log(error.response.data);
+            console.log(error.message);
             setError(error.message);
         } finally {
             setLoading(false);
@@ -68,7 +61,7 @@ function SignUpFormSubmitComponent() {
 
     if (error) {
         console.log("에러발생");
-        return <div>에러가 발생했습니다: {error.message}</div>;
+        setError(error.message + " ERROR TEST");
     }
 
     return (
@@ -145,6 +138,9 @@ function SignUpFormSubmitComponent() {
                                        })}/>
                                 {errors.nickName && <div style={{color: 'red'}}>{errors.nickName.message}</div>}
                                 <label htmlFor="nickName">* 닉네임</label>
+                            </div>
+                            <div className="" id="submitErrorMessage">
+                                <div className="text-center text-danger mb-3">{error}</div>
                             </div>
                             <div className="d-grid">
                                 <button className="btn btn-primary btn-lg" id="submitButton"
