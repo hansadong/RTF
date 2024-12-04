@@ -51,4 +51,4 @@ jobs:
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_DOMAIN }}
           docker rm -f rtf-container
           docker pull ${{ secrets.ECR_RTF_REPO }}:latest
-          docker run -d --name rtf-container --network rt_network -p 80:80 ${{ secrets.ECR_RTF_REPO }}:latest
+          docker run -e TZ=Asia/Seoul -d --name rtf-container --network rt_network -p 80:80 ${{ secrets.ECR_RTF_REPO }}:latest
